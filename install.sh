@@ -4,8 +4,6 @@
 # │   One-click installer                                 │
 # └──────────────────────────────────────────────────────┘
 
-set -e
-
 NULLY_DIR="$(cd "$(dirname "$0")" && pwd)"
 LOG_FILE="$NULLY_DIR/install.log"
 
@@ -20,9 +18,6 @@ source "$NULLY_DIR/tools/kali_base.sh"
 source "$NULLY_DIR/tools/kali_tools.sh"
 source "$NULLY_DIR/tools/extra_tools.sh"
 source "$NULLY_DIR/tools/wordlists.sh"
-
-# Redirect all output also to log
-exec > >(tee -a "$LOG_FILE") 2>&1
 
 # ── Pre-flight checks ───────────────────────────────────────────────────────
 
@@ -44,8 +39,12 @@ preflight() {
     echo -e "  ${YELLOW}This will install Kali Linux (proot) + ALL tools.${RESET}"
     echo -e "  ${YELLOW}Required space: ~8-15 GB | Time: 30-90 min (WiFi recommended)${RESET}"
     echo ""
-    read -p "$(echo -e ${BOLD}${CYAN}  Proceed? [Y/n]:${RESET} )" confirm
-    [[ "$confirm" =~ ^[Nn]$ ]] && echo "Aborted." && exit 0
+    printf "${BOLD}${CYAN}  Proceed? [Y/n]: ${RESET}"
+    read confirm
+    if [[ "$confirm" =~ ^[Nn]$ ]]; then
+        echo "Aborted."
+        exit 0
+    fi
 }
 
 # ── Step 1: Update Termux ───────────────────────────────────────────────────

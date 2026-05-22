@@ -11,7 +11,7 @@ setup_kali_base() {
     fi
 
     # Install Kali if not already done
-    if ! proot-distro list | grep -q "kali.*installed"; then
+    if ! proot-distro list 2>/dev/null | grep -qi "kali"; then
         print_arrow "Downloading Kali Linux rootfs (this may take a while)..."
         proot-distro install kali
         print_ok "Kali Linux rootfs installed."

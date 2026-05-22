@@ -52,7 +52,7 @@ cmd_exists() {
 
 # Check if running in Termux
 check_termux() {
-    if [ -z "$TERMUX_VERSION" ] && [ ! -d "/data/data/com.termux" ]; then
+    if [ -z "$PREFIX" ] || [ -z "$(command -v pkg 2>/dev/null)" ]; then
         print_err "This script is designed for Termux on Android."
         exit 1
     fi
