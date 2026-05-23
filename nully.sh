@@ -21,6 +21,13 @@ print_divider() {
 # ── Launch helpers ──────────────────────────────────────────────────────────
 
 launch_kali() {
+    local KALI_ROOTFS="$PREFIX/var/lib/proot-distro/installed-rootfs/kali"
+    if [ ! -d "$KALI_ROOTFS" ]; then
+        echo -e "\n${RED}Kali Linux is not installed yet.${RESET}"
+        echo -e "${YELLOW}Run: bash ~/NullY/install.sh${RESET}\n"
+        read -p "Press Enter to continue..."
+        return 1
+    fi
     echo -e "\n${GREEN}Entering Kali Linux shell...${RESET}\n"
     proot-distro login kali
 }

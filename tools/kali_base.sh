@@ -10,13 +10,18 @@ setup_kali_base() {
         pkg install -y proot-distro
     fi
 
-    # Install Kali if not already done
-    if ! proot-distro list 2>/dev/null | grep -qi "kali"; then
+    # Install Kali if not already done (check actual rootfs directory)
+    local KALI_ROOTFS="$PREFIX/var/lib/proot-distro/installed-rootfs/kali"
+    if [ ! -d "$KALI_ROOTFS" ]; then
         print_arrow "Downloading Kali Linux rootfs (this may take a while)..."
         proot-distro install kali
+        if [ ! -d "$KALI_ROOTFS" ]; then
+            print_err "Kali install failed. Check your internet connection and try again."
+            exit 1
+        fi
         print_ok "Kali Linux rootfs installed."
     else
-        print_ok "Kali Linux already installed."
+        print_ok "Kali Linux already installed at: $KALI_ROOTFS"
     fi
 
     # Ensure Kali repos point to kali-rolling and update package lists
