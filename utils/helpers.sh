@@ -28,21 +28,9 @@ pkg_install() {
     fi
 }
 
-# Run command inside Kali proot
+# Run command inside Kali proot (shows output by default)
 kali_run() {
     proot-distro login kali -- bash -c "$1"
-}
-
-# Install Kali package inside proot
-kali_pkg_install() {
-    local pkg=$1
-    print_arrow "Installing in Kali: ${BOLD}$pkg${RESET}"
-    kali_run "DEBIAN_FRONTEND=noninteractive apt-get install -y $pkg" &>/dev/null 2>&1
-    if [ $? -eq 0 ]; then
-        print_ok "Kali installed: ${BOLD}$pkg${RESET}"
-    else
-        print_err "Kali failed:    ${BOLD}$pkg${RESET}"
-    fi
 }
 
 # Check if command exists
